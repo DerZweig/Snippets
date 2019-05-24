@@ -1,0 +1,14 @@
+        const auto hInstance      = GetModuleHandle(nullptr); // get current application handle
+        const auto appWindowGroup = my::win32::window_group_class(hInstance, TEXT("window_class"), CS_HREDRAW | CS_VREDRAW); //register window group class
+        if (!appWindowGroup.registered()) throw std::runtime_error("Failed to register window class.");
+
+        const auto appWindow = appWindowGroup.create_window(0, TEXT("TEST WINDOW"), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 200, 200, nullptr, nullptr, [&resume](auto hwnd, auto msg, auto wParam, auto lParam)
+        {
+            if (msg == WM_CLOSE)
+            {
+                resume = false;
+                return true;
+            }
+
+            return false;
+        });
